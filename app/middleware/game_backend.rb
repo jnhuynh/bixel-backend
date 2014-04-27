@@ -1,5 +1,6 @@
 require "faye/websocket"
 require File.expand_path("../events/area", __FILE__)
+require File.expand_path("../events/player", __FILE__)
 
 class GameBackend
   # Needed to prevent Heroku Timeout
@@ -27,14 +28,16 @@ class GameBackend
 
         case event_type
         when "game::player_enter"
-          payload = Events::Area.player_enter
+          payload = Events::Area.player_enter(data)
         when "game::player_exit"
-          payload = Events::Area.player_exit
+          payload = Events::Area.player_exit(data)
         when "game::player_move"
-          payload = Events::Area.player_move
+          payload = Events::Area.player_move(data)
         when "player::create"
-          payload = Events::Player.create
+          payload = Events::Player.create(data)
         end
+
+        @clients.each { |client| client.send(payload) }
       end
 
       ws.on :close do |event|
