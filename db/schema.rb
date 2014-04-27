@@ -17,14 +17,14 @@ ActiveRecord::Schema.define(version: 20140427192727) do
   enable_extension "plpgsql"
 
   create_table "areas", force: true do |t|
-    t.string   "name"
+    t.string   "name",       null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "players", force: true do |t|
-    t.decimal  "x"
-    t.decimal  "y"
+    t.decimal  "x",          default: 0.0
+    t.decimal  "y",          default: 0.0
     t.string   "name"
     t.integer  "area_id"
     t.datetime "created_at"
@@ -32,9 +32,9 @@ ActiveRecord::Schema.define(version: 20140427192727) do
   end
 
   create_table "sprite_sheets", force: true do |t|
-    t.integer  "current_frame"
-    t.string   "name"
-    t.string   "src"
+    t.integer  "current_frame", default: 0
+    t.string   "name",                      null: false
+    t.string   "src",                       null: false
     t.integer  "player_id"
     t.datetime "created_at"
     t.datetime "updated_at"
