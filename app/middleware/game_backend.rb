@@ -1,4 +1,6 @@
 require "faye/websocket"
+require "json"
+
 require File.expand_path("../events/area", __FILE__)
 require File.expand_path("../events/player", __FILE__)
 
@@ -24,20 +26,33 @@ class GameBackend
       ws.on :message do |event|
         data       = JSON.parse(event.data)
         event_type = data["event"]
-        payload    = {}
 
-        case event_type
-        when "game::player_enter"
-          payload = Events::Area.player_enter(data)
-        when "game::player_exit"
-          payload = Events::Area.player_exit(data)
-        when "game::player_move"
-          payload = Events::Area.player_move(data)
-        when "player::create"
-          payload = Events::Player.create(data)
+        puts "GameBackend Web Socket"
+        puts "\t request payload: #{data}\n\n"
+
+        payload = case event_type
+                  when "game::player_enter"
+                    Events::Area.player_enter(data)
+                  when "game::player_exit"
+                    Events::Area.player_exit(data)
+                  when "game::player_move"
+                    Events::Area.player_move(data)
+                  when "player::create"
+                    Events::Player.create(data)
+                  else
+                    {}
+                  end
+
+        # uuid used by frontend for async resolve/reject
+        payload[:uuid]  = data["uuid"]
+        payload[:event] = event_type
+
+        payload_string = payload.to_json
+        puts "\tresponse payload: #{payload}\n\n"
+
+        @clients.each do |client|
+          client.send(payload_string)
         end
-
-        @clients.each { |client| client.send(payload) }
       end
 
       ws.on :close do |event|
