@@ -11,6 +11,7 @@ gem "faye-websocket"
 gem "puma"
 
 gem "active_model_serializers"
+gem "annotate"
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem "jbuilder", "~> 1.2"
