@@ -25,27 +25,27 @@ class GameBackend
 
       ws.on :message do |event|
         data       = JSON.parse(event.data)
-        event_type = data["event"]
+        event_name = data["event_name"]
 
         puts "GameBackend Web Socket"
         puts "\t request payload: #{data}\n\n"
 
-        payload = case event_type
-                  when "game::player_enter"
+        payload = case event_name
+                  when "game/player_enter"
                     Events::Area.player_enter(data)
-                  when "game::player_exit"
+                  when "game/player_exit"
                     Events::Area.player_exit(data)
-                  when "game::player_move"
+                  when "game/player_move"
                     Events::Area.player_move(data)
-                  when "player::create"
+                  when "players/create"
                     Events::Player.create(data)
                   else
                     {}
                   end
 
         # uuid used by frontend for async resolve/reject
-        payload[:uuid]  = data["uuid"]
-        payload[:event] = event_type
+        payload[:uuid]       = data["uuid"]
+        payload[:event_name] = event_name
 
         payload_string = payload.to_json
         puts "\tresponse payload: #{payload}\n\n"
