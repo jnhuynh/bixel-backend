@@ -26,6 +26,27 @@ module Events
 
         response_payload
       end
+
+      def show(request_payload)
+        id = request_payload["player"]["id"]
+
+        puts "Events::Player::show"
+        response_payload = {}
+
+        if id
+          player = ::Player.where(:id => id).first
+
+          if player
+            response_payload[:data] = PlayerSerializer.new(player).to_json
+          else
+            response_payload[:error] = "Events::Player::show could not find player with id: #{id}"
+          end
+        else
+          response_payload[:error] = "Events::Player::show requires an \"id\" property"
+        end
+
+        response_payload
+      end
     end
   end
 end

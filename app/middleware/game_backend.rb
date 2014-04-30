@@ -41,6 +41,8 @@ class GameBackend
                     Events::Area.player_move(data)
                   when "player/create"
                     Events::Player.create(data)
+                  when "player/show"
+                    Events::Player.show(data)
                   else
                     {}
                   end
