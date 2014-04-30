@@ -37,12 +37,12 @@ class GameBackend
                     Events::Area.player_enter(data)
                   when "area/player_exit"
                     Events::Area.player_exit(data)
-                  when "area/player_move"
-                    Events::Area.player_move(data)
                   when "player/create"
                     Events::Player.create(data)
                   when "player/show"
                     Events::Player.show(data)
+                  when "player/move"
+                    Events::Player.move(data)
                   else
                     {}
                   end
