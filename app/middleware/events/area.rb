@@ -49,7 +49,7 @@ module Events
               area.players << player if player
             end
 
-            area.save()
+            area.save
             response_payload[:data] = AreaSerializer.new(area).to_json
           else
             response_payload[:error] = "Events::Area::player_enter could not find area with id: #{id}"
@@ -79,7 +79,7 @@ module Events
             end.compact
 
             area.players = players
-            area.save()
+            area.save
             response_payload[:data] = AreaSerializer.new(area).to_json
           else
             response_payload[:error] = "Events::Area::player_exit could not find area with id: #{id}"
