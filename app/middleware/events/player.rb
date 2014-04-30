@@ -18,7 +18,7 @@ module Events
           if new_player.valid?
             new_player.save
 
-            response_payload[:data] = ::PlayerSerializer.new(new_player).to_json
+            response_payload[:data] = PlayerSerializer.new(new_player).to_json
           end
         else
           response_payload[:error] = "Events::Player::create requires a \"name\" property"
@@ -29,3 +29,4 @@ module Events
     end
   end
 end
+
