@@ -9,7 +9,9 @@ module Events
         response_payload = {}
 
         areas = ::Area.all
-        response_payload[:data] = ActiveModel::ArraySerializer
+
+        response_payload[:data]         = { }
+        response_payload[:data][:areas] = ActiveModel::ArraySerializer
           .new(areas, each_serializer: AreaSerializer).to_json
 
         response_payload
