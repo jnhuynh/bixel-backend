@@ -50,20 +50,45 @@ module Events
             end
 
             area.save()
-
             response_payload[:data] = AreaSerializer.new(area).to_json
           else
             response_payload[:error] = "Events::Area::player_enter could not find area with id: #{id}"
           end
         else
-          response_payload[:error] = "Events::Area::show requires an \"id\" property"
+          response_payload[:error] = "Events::Area::player_enter requires an \"id\" property"
         end
 
         response_payload
       end
 
-      def player_exit(data)
-        puts "player_exit"
+      def player_exit(request_payload)
+        puts "Events::Area::player_exit"
+
+        area_id = request_payload["area"]["id"]
+
+        response_payload = {}
+
+        if area_id
+          area = ::Area.where(:id => area_id).first
+
+          if area
+            player_ids = request_payload["area"]["players"]
+
+            players = player_ids.map do |player_id|
+              ::Player.where(:id => player_id).first
+            end.compact
+
+            area.players = players
+            area.save()
+            response_payload[:data] = AreaSerializer.new(area).to_json
+          else
+            response_payload[:error] = "Events::Area::player_exit could not find area with id: #{id}"
+          end
+        else
+          response_payload[:error] = "Events::Area::player_exit requires an \"id\" property"
+        end
+
+        response_payload
       end
 
       def player_move(data)
