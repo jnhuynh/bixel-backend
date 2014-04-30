@@ -27,6 +27,9 @@ module Events
         response_payload[:data][:players] = ActiveModel::ArraySerializer
           .new(players, :each_serializer => PlayerSerializer).to_json
 
+        # We do this to keep our response's data property consistent with the
+        # other event handlers.
+        response_payload[:data] = response_payload[:data].to_json
         response_payload
       end
 
