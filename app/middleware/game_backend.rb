@@ -31,13 +31,15 @@ class GameBackend
         puts "\t request payload: #{data}\n\n"
 
         payload = case event_name
-                  when "game/player_enter"
+                  when "area/index"
+                    Events::Area.index
+                  when "area/player_enter"
                     Events::Area.player_enter(data)
-                  when "game/player_exit"
+                  when "area/player_exit"
                     Events::Area.player_exit(data)
-                  when "game/player_move"
+                  when "area/player_move"
                     Events::Area.player_move(data)
-                  when "players/create"
+                  when "player/create"
                     Events::Player.create(data)
                   else
                     {}
