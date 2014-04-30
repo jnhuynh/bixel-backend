@@ -3,4 +3,5 @@ class PlayerSerializer < ActiveModel::Serializer
 
   attributes :id, :name, :x, :y
   has_one :sprite_sheet, :key => "sprite_sheet"
+  has_one :area, :key => "area"
 end
