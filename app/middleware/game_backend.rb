@@ -16,7 +16,7 @@ class GameBackend
   def call(env)
     # Create a new websocket if it is a websocket request.
     if Faye::WebSocket.websocket?(env)
-      ws = Faye::WebSocket.new(env, nil, {ping: KEEPALIVE_TIME })
+      ws = Faye::WebSocket.new(env, nil, { ping: KEEPALIVE_TIME })
 
       ws.on :open do |event|
         p [:open, ws.object_id]
